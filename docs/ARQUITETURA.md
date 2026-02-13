@@ -23,7 +23,7 @@ O sistema ERP E-commerce é uma aplicação desktop construída com Electron, ut
 
 - **Frontend:** HTML5, CSS3, JavaScript ES6+
 - **Backend:** Node.js com Electron
-- **Banco de Dados:** SQLite3
+- **Banco de Dados:** better-sqlite3 (SQLite)
 - **Arquitetura:** MVC (Model-View-Controller)
 
 ### Características Principais
@@ -74,7 +74,7 @@ O sistema ERP E-commerce é uma aplicação desktop construída com Electron, ut
 │             │                           │
 │  ┌──────────▼───────────────────────┐  │
 │  │       Database Layer             │  │
-│  │  (SQLite - db.js)                │  │
+│  │  (better-sqlite3 - db.js)        │  │
 │  └──────────┬───────────────────────┘  │
 │             │                           │
 └─────────────┼───────────────────────────┘
@@ -95,7 +95,7 @@ O sistema ERP E-commerce é uma aplicação desktop construída com Electron, ut
 |-----------|--------|-----|
 | Node.js | 18+ | Runtime JavaScript |
 | Electron | 28.0.0 | Framework desktop |
-| SQLite3 | 5.1.6 | Banco de dados |
+| better-sqlite3 | 11.7.0 | Banco de dados (SQLite) |
 
 ### Frontend
 
@@ -131,7 +131,7 @@ erp-ecommerce-completo/
 │   │   ├── preload.js             # Bridge segura
 │   │   │
 │   │   ├── database/
-│   │   │   ├── db.js              # Conexão SQLite
+│   │   │   ├── db.js              # Conexão better-sqlite3
 │   │   │   ├── migrations.js      # Schema do banco
 │   │   │   └── backup.js          # Sistema de backup
 │   │   │
@@ -195,6 +195,27 @@ erp-ecommerce-completo/
 ---
 
 ## 🗄️ Banco de Dados
+
+### better-sqlite3: Vantagens da Migração
+
+O sistema utiliza **better-sqlite3** ao invés do sqlite3 tradicional, oferecendo:
+
+✅ **Melhor Compatibilidade com Windows**: Não requer Visual Studio Build Tools para compilação  
+✅ **API Síncrona**: Código mais limpo e sem callbacks aninhados  
+✅ **Melhor Performance**: Até 2x mais rápido que sqlite3 em operações de leitura  
+✅ **Suporte Nativo a Electron**: Sem necessidade de rebuild após instalação  
+✅ **Manutenção Ativa**: Melhor documentação e suporte da comunidade
+
+### Comparação de API
+
+| sqlite3 | better-sqlite3 |
+|---------|----------------|
+| `db.run(sql, params, callback)` | `db.prepare(sql).run(params)` |
+| `db.get(sql, params, callback)` | `db.prepare(sql).get(params)` |
+| `db.all(sql, params, callback)` | `db.prepare(sql).all(params)` |
+| Assíncrono (callbacks/promises) | Síncrono (retorno direto) |
+
+> **Nota**: A camada de abstração (`db.js`) mantém compatibilidade com código assíncrono, retornando Promises para manter a API consistente.
 
 ### Schema Completo
 
@@ -551,5 +572,5 @@ Para contribuir com o desenvolvimento:
 
 ---
 
-**Última atualização:** 2026-02-13  
-**Versão do documento:** 1.0
+**Última atualização:** 2026-02-13 (Migrado para better-sqlite3)  
+**Versão do documento:** 1.1
