@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja Online - ERP E-commerce</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo h1 {
+      font-size: 28px;
+    }
+
+    .carrinho {
+      background: rgba(255,255,255,0.2);
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .carrinho:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Busca */
+    .busca-section {
+      background: white;
+      padding: 30px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .busca-box {
+      display: flex;
+      gap: 10px;
+    }
+
+    .busca-box input {
+      flex: 1;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .busca-box button {
+      padding: 15px 30px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .busca-box button:hover {
+      background: #5568d3;
+    }
+
+    /* Produtos */
+    .produtos-section {
+      padding: 40px 0;
+    }
+
+    .produtos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .produto-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .produto-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+
+    .produto-imagem {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+    }
+
+    .produto-info {
+      padding: 20px;
+    }
+
+    .produto-nome {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .produto-preco {
+      font-size: 24px;
+      color: #667eea;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .btn-comprar {
+      width: 100%;
+      padding: 12px;
+      background: #48bb78;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .btn-comprar:hover {
+      background: #38a169;
+    }
+
+    /* Footer */
+    footer {
+      background: #2d3748;
+      color: white;
+      padding: 40px 0;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 15px;
+    }
+
+    .footer-section p,
+    .footer-section a {
+      color: #a0aec0;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .footer-section a:hover {
+      color: white;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .produtos-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-content {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>🛒 Loja Online</h1>
+        </div>
+        <div class="carrinho">
+          🛒 Carrinho (0)
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Busca -->
+  <section class="busca-section">
+    <div class="container">
+      <div class="busca-box">
+        <input 
+          type="text" 
+          id="busca" 
+          placeholder="🔍 Buscar produtos..."
+        >
+        <button onclick="buscarProdutos()">Buscar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Produtos -->
+  <section class="produtos-section">
+    <div class="container">
+      <h2 style="margin-bottom: 30px; color: #333;">Produtos em Destaque</h2>
+      
+      <div id="produtos-container" class="produtos-grid">
+        <div class="loading">Carregando produtos...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Sobre Nós</h3>
+          <p>Sistema ERP com E-commerce integrado para pequenas e médias empresas.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Links Úteis</h3>
+          <a href="#">Minha Conta</a>
+          <a href="#">Meus Pedidos</a>
+          <a href="#">Fale Conosco</a>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Formas de Pagamento</h3>
+          <p>💳 Cartão de Crédito</p>
+          <p>💵 Boleto Bancário</p>
+          <p>📱 PIX</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Contato</h3>
+          <p>📧 contato@loja.com.br</p>
+          <p>📞 (11) 1234-5678</p>
+          <p>📍 São Paulo, SP</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let produtos = [];
+    let carrinho = [];
+
+    // Carregar produtos ao iniciar
+    document.addEventListener('DOMContentLoaded', () => {
+      carregarProdutos();
+    });
+
+    async function carregarProdutos(busca = '') {
+      try {
+        // Em produção, isso viria da API
+        // const response = await fetch('/api/produtos');
+        // produtos = await response.json();
+
+        // Por enquanto, produtos de exemplo
+        produtos = [
+          {
+            id: 1,
+            nome: 'Produto Exemplo 1',
+            preco: 99.99,
+            estoque: 10,
+            imagem: '📦'
+          },
+          {
+            id: 2,
+            nome: 'Produto Exemplo 2',
+            preco: 149.99,
+            estoque: 5,
+            imagem: '📱'
+          },
+          {
+            id: 3,
+            nome: 'Produto Exemplo 3',
+            preco: 79.99,
+            estoque: 15,
+            imagem: '💻'
+          },
+          {
+            id: 4,
+            nome: 'Produto Exemplo 4',
+            preco: 199.99,
+            estoque: 3,
+            imagem: '🎮'
+          }
+        ];
+
+        renderizarProdutos();
+      } catch (error) {
+        console.error('Erro ao carregar produtos:', error);
+        document.getElementById('produtos-container').innerHTML = `
+          <div class="loading">Erro ao carregar produtos</div>
+        `;
+      }
+    }
+
+    function renderizarProdutos() {
+      const container = document.getElementById('produtos-container');
+      
+      if (produtos.length === 0) {
+        container.innerHTML = `
+          <div class="loading">Nenhum produto encontrado</div>
+        `;
+        return;
+      }
+
+      container.innerHTML = produtos.map(produto => `
+        <div class="produto-card">
+          <div class="produto-imagem">
+            ${produto.imagem}
+          </div>
+          <div class="produto-info">
+            <div class="produto-nome">${produto.nome}</div>
+            <div class="produto-preco">${formatarMoeda(produto.preco)}</div>
+            <button class="btn-comprar" onclick="adicionarCarrinho(${produto.id})">
+              🛒 Adicionar ao Carrinho
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function buscarProdutos() {
+      const busca = document.getElementById('busca').value;
+      carregarProdutos(busca);
+    }
+
+    function adicionarCarrinho(produtoId) {
+      const produto = produtos.find(p => p.id === produtoId);
+      
+      if (produto) {
+        const itemCarrinho = carrinho.find(item => item.id === produtoId);
+        
+        if (itemCarrinho) {
+          itemCarrinho.quantidade++;
+        } else {
+          carrinho.push({
+            ...produto,
+            quantidade: 1
+          });
+        }
+
+        atualizarCarrinho();
+        alert('✅ Produto adicionado ao carrinho!');
+      }
+    }
+
+    function atualizarCarrinho() {
+      const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
+      document.querySelector('.carrinho').textContent = `🛒 Carrinho (${totalItens})`;
+    }
+
+    function formatarMoeda(valor) {
+      return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(valor);
+    }
+  </script>
+</body>
+</html>
