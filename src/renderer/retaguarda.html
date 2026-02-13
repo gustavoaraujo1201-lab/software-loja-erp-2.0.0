@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retaguarda - ERP E-commerce</title>
+  <link rel="stylesheet" href="css/retaguarda.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar com menu -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>🏪 ERP E-commerce</h2>
+        <p id="usuario-nome">Carregando...</p>
+      </div>
+
+      <!-- Campo de busca no menu -->
+      <div class="menu-search">
+        <input type="text" id="search-menu" placeholder="🔍 Buscar no menu...">
+      </div>
+
+      <!-- Menu -->
+      <nav class="menu">
+        <!-- CADASTROS -->
+        <div class="menu-section">
+          <h3>📦 CADASTROS</h3>
+          <ul>
+            <li><a href="#" data-page="produtos">Produtos</a></li>
+            <li><a href="#" data-page="clientes">Clientes</a></li>
+            <li><a href="#" data-page="fornecedores">Fornecedores</a></li>
+            <li><a href="#" data-page="categorias">Categorias</a></li>
+            <li><a href="#" data-page="usuarios">Usuários</a></li>
+          </ul>
+        </div>
+
+        <!-- MOVIMENTAÇÕES -->
+        <div class="menu-section">
+          <h3>💰 MOVIMENTAÇÕES</h3>
+          <ul>
+            <li><a href="#" data-page="vendas">Vendas</a></li>
+            <li><a href="#" data-page="compras">Compras</a></li>
+            <li><a href="#" data-action="pdv">PDV - Ponto de Venda</a></li>
+          </ul>
+        </div>
+
+        <!-- ESTOQUE -->
+        <div class="menu-section">
+          <h3>📊 ESTOQUE</h3>
+          <ul>
+            <li><a href="#" data-page="estoque">Consulta de Estoque</a></li>
+            <li><a href="#" data-page="estoque-movimentacoes">Movimentações</a></li>
+            <li><a href="#" data-page="estoque-inventario">Inventário</a></li>
+          </ul>
+        </div>
+
+        <!-- FINANCEIRO -->
+        <div class="menu-section">
+          <h3>💵 FINANCEIRO</h3>
+          <ul>
+            <li><a href="#" data-page="contas-pagar">Contas a Pagar</a></li>
+            <li><a href="#" data-page="contas-receber">Contas a Receber</a></li>
+            <li><a href="#" data-page="fluxo-caixa">Fluxo de Caixa</a></li>
+          </ul>
+        </div>
+
+        <!-- FISCAL -->
+        <div class="menu-section">
+          <h3>📄 FISCAL</h3>
+          <ul>
+            <li><a href="#" data-page="nfe-emissao">Emissão de NF-e</a></li>
+            <li><a href="#" data-page="nfe-consulta">Consulta NF-e</a></li>
+          </ul>
+        </div>
+
+        <!-- E-COMMERCE -->
+        <div class="menu-section">
+          <h3>🛒 E-COMMERCE</h3>
+          <ul>
+            <li><a href="#" data-page="ecommerce-sincronizacao">Sincronização</a></li>
+            <li><a href="#" data-page="ecommerce-pedidos">Pedidos Online</a></li>
+            <li><a href="#" data-page="ecommerce-config">Configurações</a></li>
+          </ul>
+        </div>
+
+        <!-- FERRAMENTAS -->
+        <div class="menu-section">
+          <h3>🔧 FERRAMENTAS</h3>
+          <ul>
+            <li><a href="#" data-page="ferramentas-importacao">Importação de Dados</a></li>
+            <li><a href="#" data-page="ferramentas-exportacao">Exportação de Dados</a></li>
+            <li><a href="#" data-page="ferramentas-email">Envio de E-mail</a></li>
+            <li><a href="#" data-page="ferramentas-backup">Backup</a></li>
+            <li><a href="#" data-page="ferramentas-logs">Logs de Eventos</a></li>
+            <li><a href="#" data-page="ferramentas-etiquetas">Impressão de Etiquetas</a></li>
+            <li><a href="#" data-page="ferramentas-tarefas">Tarefas Agendadas</a></li>
+            <li><a href="#" data-page="ferramentas-lgpd">LGPD</a></li>
+          </ul>
+        </div>
+
+        <!-- RELATÓRIOS -->
+        <div class="menu-section">
+          <h3>📊 RELATÓRIOS</h3>
+          <ul>
+            <li><a href="#" data-page="relatorios-vendas">Vendas</a></li>
+            <li><a href="#" data-page="relatorios-compras">Compras</a></li>
+            <li><a href="#" data-page="relatorios-estoque">Estoque</a></li>
+            <li><a href="#" data-page="relatorios-financeiro">Financeiro</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Rodapé da sidebar -->
+      <div class="sidebar-footer">
+        <button id="btn-logout">🚪 Sair</button>
+      </div>
+    </aside>
+
+    <!-- Área de conteúdo principal -->
+    <main class="main-content">
+      <div class="content-header">
+        <h1>Bem-vindo ao Sistema ERP</h1>
+        <p>Selecione uma opção no menu lateral para começar</p>
+      </div>
+
+      <div id="content-area" class="content-area">
+        <!-- Dashboard inicial -->
+        <div class="dashboard">
+          <div class="card">
+            <h3>💰 Vendas Hoje</h3>
+            <p class="card-value">R$ 0,00</p>
+          </div>
+          
+          <div class="card">
+            <h3>📦 Produtos</h3>
+            <p class="card-value">0</p>
+          </div>
+          
+          <div class="card">
+            <h3>👥 Clientes</h3>
+            <p class="card-value">0</p>
+          </div>
+          
+          <div class="card">
+            <h3>⚠️ Estoque Baixo</h3>
+            <p class="card-value">0</p>
+          </div>
+        </div>
+
+        <div class="dashboard-info">
+          <h2>🎉 Sistema pronto para uso!</h2>
+          <p>Utilize o menu lateral para acessar as funcionalidades do sistema.</p>
+          <ul>
+            <li>✅ Cadastre produtos, clientes e fornecedores</li>
+            <li>✅ Registre vendas e compras</li>
+            <li>✅ Controle seu estoque</li>
+            <li>✅ Gerencie o financeiro</li>
+            <li>✅ Integre com e-commerce</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/retaguarda.js"></script>
+</body>
+</html>
