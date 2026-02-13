@@ -1,12 +1,13 @@
 /**
  * Configuração e gerenciamento do banco de dados SQLite
+ * Usando better-sqlite3 para melhor compatibilidade e performance
  */
 
-const sqlite3 = require('sqlite3').verbose();
+const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
-class Database {
+class DatabaseWrapper {
   constructor() {
     // Caminho do banco de dados
     const dbDir = path.join(__dirname, '../../../data');
@@ -23,20 +24,19 @@ class Database {
   /**
    * Inicializa a conexão com o banco de dados
    */
-  async initialize() {
-    return new Promise((resolve, reject) => {
-      this.db = new sqlite3.Database(this.dbPath, (err) => {
-        if (err) {
-          console.error('❌ Erro ao conectar ao banco de dados:', err);
-          reject(err);
-        } else {
-          console.log('✅ Conexão com banco de dados estabelecida');
-          // Habilitar foreign keys
-          this.db.run('PRAGMA foreign_keys = ON');
-          resolve();
-        }
-      });
-    });
+  initialize() {
+    try {
+      this.db = new Database(this.dbPath);
+      console.log('✅ Conexão com banco de dados estabelecida');
+      
+      // Habilitar foreign keys
+      this.db.pragma('foreign_keys = ON');
+      
+      return Promise.resolve();
+    } catch (err) {
+      console.error('❌ Erro ao conectar ao banco de dados:', err);
+      return Promise.reject(err);
+    }
   }
 
   /**
@@ -45,17 +45,15 @@ class Database {
    * @param {Array} params - Parâmetros da query
    */
   run(sql, params = []) {
-    return new Promise((resolve, reject) => {
-      this.db.run(sql, params, function(err) {
-        if (err) {
-          console.error('❌ Erro ao executar query:', err);
-          console.error('SQL:', sql);
-          reject(err);
-        } else {
-          resolve({ lastID: this.lastID, changes: this.changes });
-        }
-      });
-    });
+    try {
+      const stmt = this.db.prepare(sql);
+      const info = stmt.run(params);
+      return Promise.resolve({ lastID: info.lastInsertRowid, changes: info.changes });
+    } catch (err) {
+      console.error('❌ Erro ao executar query:', err);
+      console.error('SQL:', sql);
+      return Promise.reject(err);
+    }
   }
 
   /**
@@ -64,16 +62,14 @@ class Database {
    * @param {Array} params - Parâmetros da query
    */
   get(sql, params = []) {
-    return new Promise((resolve, reject) => {
-      this.db.get(sql, params, (err, row) => {
-        if (err) {
-          console.error('❌ Erro ao buscar dados:', err);
-          reject(err);
-        } else {
-          resolve(row);
-        }
-      });
-    });
+    try {
+      const stmt = this.db.prepare(sql);
+      const row = stmt.get(params);
+      return Promise.resolve(row);
+    } catch (err) {
+      console.error('❌ Erro ao buscar dados:', err);
+      return Promise.reject(err);
+    }
   }
 
   /**
@@ -82,36 +78,34 @@ class Database {
    * @param {Array} params - Parâmetros da query
    */
   all(sql, params = []) {
-    return new Promise((resolve, reject) => {
-      this.db.all(sql, params, (err, rows) => {
-        if (err) {
-          console.error('❌ Erro ao buscar dados:', err);
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
-    });
+    try {
+      const stmt = this.db.prepare(sql);
+      const rows = stmt.all(params);
+      return Promise.resolve(rows);
+    } catch (err) {
+      console.error('❌ Erro ao buscar dados:', err);
+      return Promise.reject(err);
+    }
   }
 
   /**
    * Inicia uma transação
    */
-  async beginTransaction() {
+  beginTransaction() {
     return this.run('BEGIN TRANSACTION');
   }
 
   /**
    * Confirma uma transação
    */
-  async commit() {
+  commit() {
     return this.run('COMMIT');
   }
 
   /**
    * Reverte uma transação
    */
-  async rollback() {
+  rollback() {
     return this.run('ROLLBACK');
   }
 
@@ -119,22 +113,17 @@ class Database {
    * Fecha a conexão com o banco de dados
    */
   close() {
-    return new Promise((resolve, reject) => {
+    try {
       if (this.db) {
-        this.db.close((err) => {
-          if (err) {
-            console.error('❌ Erro ao fechar banco de dados:', err);
-            reject(err);
-          } else {
-            console.log('✅ Conexão com banco de dados fechada');
-            resolve();
-          }
-        });
-      } else {
-        resolve();
+        this.db.close();
+        console.log('✅ Conexão com banco de dados fechada');
       }
-    });
+      return Promise.resolve();
+    } catch (err) {
+      console.error('❌ Erro ao fechar banco de dados:', err);
+      return Promise.reject(err);
+    }
   }
 }
 
-module.exports = Database;
+module.exports = DatabaseWrapper;
