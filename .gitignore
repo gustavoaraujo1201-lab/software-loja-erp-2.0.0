@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+
+# Database
+data/database.db
+data/database.db-journal
+
+# Logs
+data/logs/*.log
+*.log
+
+# Backups
+data/backups/*
+!data/backups/.gitkeep
+
+# Imports/Exports
+data/imports/*
+!data/imports/.gitkeep
+data/exports/*
+!data/exports/.gitkeep
+
+# Temporary files
+temp/*
+!temp/.gitkeep
+*.tmp
+*.temp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+
+# Coverage
+coverage/
+.nyc_output/
